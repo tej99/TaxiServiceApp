@@ -25,13 +25,43 @@ import com.parse.SaveCallback;
 
 public class MainActivity extends AppCompatActivity {
 
+  public void getStarted(View view){
+    Switch userTypeSwitch = (Switch) findViewById(R.id.userTypeSwitch);
+    String userType = "rider";
+
+    if (userTypeSwitch.isChecked())  {
+        userType = "driver";
+    }
+
+    ParseUser.getCurrentUser().put("RiderOrDriver", userType);
+
+      Log.i("Info", "redirect as " + userType);
+  }
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
-    
+    getSupportActionBar().hide();
+
+    if(ParseUser.getCurrentUser() == null){
+        ParseAnonymousUtils.logIn(new LogInCallback() {
+            @Override
+            public void done(ParseUser user, ParseException e) {
+                if (e == null) {
+
+                    Log.i("Info", "anonymous login successful");
+                }else {
+                    Log.i("info", "anonymous login failed");
+                }
+            }
+        });
+    } else{
+        if (ParseUser.getCurrentUser().get("RiderOrDriver") != null) {
+            Log.i("Info", "redirect as " + ParseUser.getCurrentUser().get("RiderOrDriver"));
+        }
+    }
     ParseAnalytics.trackAppOpenedInBackground(getIntent());
   }
 
