@@ -26,7 +26,7 @@ import com.parse.SaveCallback;
 public class MainActivity extends AppCompatActivity {
 
   public void redirectActivity() {
-    if(ParseUser.getCurrentUser().get("RiderOrDriver") == "rider"){
+    if(ParseUser.getCurrentUser().get("RiderOrDriver").equals("rider")){
         Intent intent  = new Intent(getApplicationContext(), RiderActivity.class);
         startActivity(intent);
     }
@@ -41,6 +41,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     ParseUser.getCurrentUser().put("RiderOrDriver", userType);
+
+      ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
+          @Override
+          public void done(ParseException e) {
+              redirectActivity();
+          }
+      });
 
       Log.i("Info", "redirect as " + userType);
 
