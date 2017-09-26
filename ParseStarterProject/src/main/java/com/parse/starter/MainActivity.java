@@ -29,6 +29,9 @@ public class MainActivity extends AppCompatActivity {
     if(ParseUser.getCurrentUser().get("RiderOrDriver").equals("rider")){
         Intent intent  = new Intent(getApplicationContext(), RiderActivity.class);
         startActivity(intent);
+    } else {
+        Intent intent  = new Intent(getApplicationContext(), ViewRequestsActivity.class);
+        startActivity(intent);
     }
   }
 
